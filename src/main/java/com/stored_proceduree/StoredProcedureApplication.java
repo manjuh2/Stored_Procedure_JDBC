@@ -7,6 +7,17 @@ import java.sql.SQLException;
 
 public class StoredProcedureApplication {
 
+    public static void main(String[] args) throws SQLException {
+//		System.out.println("Hello");
+        //SpringApplication.run(StoredProcedureApplication.class, args);
+
+//        callProcedure();
+
+        callAllUsers();
+
+//        insertNewUser();
+    }
+
     public static void callProcedure() throws SQLException {
         Connection connection = ConnectionProvider.getConnection();
         CallableStatement statement = connection.prepareCall("CALL GetUserById(?)");
@@ -19,15 +30,6 @@ public class StoredProcedureApplication {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
-//		System.out.println("Hello");
-        //SpringApplication.run(StoredProcedureApplication.class, args);
-
-//        callProcedure();
-
-        callAllUsers();
-    }
-
     private static void callAllUsers() throws SQLException {
         Connection connection = ConnectionProvider.getConnection();
         CallableStatement statement = connection.prepareCall("CALL GetAllUsers()");
@@ -37,6 +39,18 @@ public class StoredProcedureApplication {
             System.out.println(resultSet.getString(1) + " " + resultSet.getString(2) + " "
                     + resultSet.getString(3) + " " + resultSet.getString(4));
         }
+    }
+
+    private static void insertNewUser() throws SQLException {
+        Connection connection = ConnectionProvider.getConnection();
+
+        CallableStatement statement = connection.prepareCall("CALL insert_users(?,?,?)");
+
+        statement.setString(1, "Chirag");
+        statement.setString(2, "Jain");
+        statement.setString(3, "Gulbarga");
+
+        statement.execute();
     }
 
 }
